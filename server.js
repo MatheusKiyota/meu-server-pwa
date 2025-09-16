@@ -1,16 +1,18 @@
 const express = require('express');
-const app = express(); 
-const port = 4000
-const controle = require('./controladores/controle')
+const path = require('path');
+const controle = require('./controladores/controle');
 
-app.get('/', controle.homePage)
-app.get('/sobre', controle.sobrePage)
+const app = express();
+const PORT = 3000;
 
+// Servir arquivos estáticos da pasta public (index.html estará acessível em /)
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(port, () => {
-    console.log("Servidor rodando");
-}); 
+// Rotas que usam os controladores
+app.get('/login', controle.homePage);
+app.get('/cadastrar', controle.sobrePage);
 
-app.get('/componentes/:nome/:cargo/:cor', function (req, res){
-    res.send(req.params)
-})
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
